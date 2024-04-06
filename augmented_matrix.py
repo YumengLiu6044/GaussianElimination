@@ -53,10 +53,7 @@ class AugmentedMatrix(np.ndarray):
         print(self)
         # Backwards substitution
         for row_index in range(self.shape[0] - 1, -1, -1):
-            sum_of_left = 0
-            for term in range(row_index + 1, self.shape[0]):
-                sum_of_left += self[row_index][term] * x[term]
-
+            sum_of_left = sum(self[row_index][row_index + 1:self.shape[0]] * x[row_index + 1:self.shape[0]])
             x[row_index] = self[row_index][-1] - sum_of_left
 
         return x
