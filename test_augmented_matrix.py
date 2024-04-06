@@ -12,7 +12,7 @@ class TestAugmentedMatrix(unittest.TestCase):
         )
         expected_solution = [1, 0, -1]
         solution = self.augmented_matrix.solve()
-        self.assertTrue(expected_solution, solution)
+        self.assertEqual(expected_solution, solution)
 
     def test_augmented_matrix2(self):
         self.augmented_matrix = AugmentedMatrix(
@@ -21,6 +21,8 @@ class TestAugmentedMatrix(unittest.TestCase):
              [0, 1, 1, 0]]
         )
         expected_solution = [2, -1, 1]
+        solution = self.augmented_matrix.solve()
+        self.assertEqual(expected_solution, solution)
 
     def test_augmented_matrix_empty(self):
         self.augmented_matrix = AugmentedMatrix(
