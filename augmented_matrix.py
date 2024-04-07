@@ -1,20 +1,28 @@
 import numpy as np
 
 
+class InfiniteSolutionError(Exception):
+    pass
+
+
+class NoSolutionError(Exception):
+    pass
+
+
 class AugmentedMatrix(np.ndarray):
     def __new__(cls, *args, **kwargs):
         return np.asarray(*args, **kwargs).view(cls)
 
     def check_valid_solution(self):
         if self.shape[0] != self.shape[1] - 1:
-            raise ValueError('Infinite solutions exists')
+            raise InfiniteSolutionError('Infinite solutions exists')
 
         for row in self:
             if all(x == 0 for x in row[:-1]):
                 if row[-1] == 0:
-                    raise ValueError('Infinite solutions exist')
+                    raise InfiniteSolutionError('Infinite solutions exist')
                 else:
-                    raise ValueError('No solutions exist')
+                    raise NoSolutionError('No solutions exist')
 
     def swap_max_value_row(self, row, column):
         max_row_index = row
@@ -32,8 +40,11 @@ class AugmentedMatrix(np.ndarray):
             pivot = self[row][column]
             if pivot != 0:
                 for i in range(row + 1, row_count):
-                    factor = -1 * self[i][column] / pivot
-                    self[i] = factor * self[row] + self[i]
+                    leading_value = self[i][column]
+                    if leading_value == 0:
+                        continue
+                    factor = -1 * pivot / leading_value
+                    self[i] = factor * self[i] + self[row]
 
             column += 1
             row = column
@@ -50,7 +61,6 @@ class AugmentedMatrix(np.ndarray):
 
             self[row_index] = self[row_index] / pivot
 
-        print(self)
         # Backwards substitution
         for row_index in range(self.shape[0] - 1, -1, -1):
             sum_of_left = sum(self[row_index][row_index + 1:self.shape[0]] * x[row_index + 1:self.shape[0]])

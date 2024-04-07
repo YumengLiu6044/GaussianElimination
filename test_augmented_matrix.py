@@ -1,5 +1,5 @@
 import unittest
-from augmented_matrix import AugmentedMatrix
+from augmented_matrix import *
 
 
 class TestAugmentedMatrix(unittest.TestCase):
@@ -29,7 +29,7 @@ class TestAugmentedMatrix(unittest.TestCase):
             [[0, 0, 0],
              [0, 0, 0]]
         )
-        with self.assertRaises(ValueError):
+        with self.assertRaises(InfiniteSolutionError):
             self.augmented_matrix.solve()
 
     def test_no_solution(self):
@@ -38,7 +38,15 @@ class TestAugmentedMatrix(unittest.TestCase):
              [1, 2, 3, 5],
              [3, 0, 4, 2]]
         )
-        with self.assertRaises(ValueError):
+        with self.assertRaises(NoSolutionError):
+            self.augmented_matrix.solve()
+
+    def test_infinite_solution(self):
+        self.augmented_matrix = AugmentedMatrix(
+            [[1, 2, 3, 4],
+             [2, 4, 6, 8],
+             [0, 1, 1, 0]])
+        with self.assertRaises(InfiniteSolutionError) as e:
             self.augmented_matrix.solve()
 
 
