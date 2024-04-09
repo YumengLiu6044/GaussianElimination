@@ -75,12 +75,11 @@ class AugmentedMatrix(np.ndarray):
         self._simplify_echelon()
         self._reduce_echelon()
 
-
-if __name__ == '__main__':
-    m = AugmentedMatrix(
-        [[0, 3, -6, 6, 4, 5],
-         [3, -7, 8, -5, 8, 9],
-         [3, -9, 12, -9, 6, 15]])
-    m.solve()
-    print(m, '\n')
+    def __repr__(self):
+        equations = ''
+        for i in range(self.shape[0]):
+            equation = ''
+            for j in range(self.shape[1]):
+                ...
+            equations += equation + '\n'
 
