@@ -1,1 +1,1 @@
-from augmented_matrix import AugmentedMatrix
+from .augmented_matrix import AugmentedMatrix
