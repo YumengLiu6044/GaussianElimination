@@ -6,27 +6,35 @@ class NoSolutionError(Exception):
 
 
 class AugmentedMatrix(np.ndarray):
+    def __init__(self):
+        self._state = 'non_simplified'
+
     def __new__(cls, *args, **kwargs):
         return np.asarray(*args, dtype=np.float64, **kwargs).view(cls)
 
     def _check_valid_solution(self):
+        """
+        Checks if the matrix is consistent
+        :return:
+        """
         for row in self:
             if all(x == 0 for x in row[:-1]):
                 if row[-1] != 0:
                     raise NoSolutionError('No solution exists!')
 
-    def _swap_max_value_row(self, row, column):
-        max_row_index = row
-        for i in range(row, self.shape[0]):
-            if abs(self[i][column]) > abs(self[max_row_index][column]):
-                max_row_index = i
-
-        self[[row, max_row_index]] = self[[max_row_index, row]]
-
-    def _partial_pivot(self):
+    def partial_pivot(self):
+        """
+        Transforms the matrix into upper triangular form by partial pivoting
+        """
         row, column = 0, 0
         while row < (row_count := self.shape[0]) and column < self.shape[1]:
-            self._swap_max_value_row(row, column)
+            max_row_index = row
+            for i in range(row, self.shape[0]):
+                if abs(self[i][column]) > abs(self[max_row_index][column]):
+                    max_row_index = i
+
+            self[[row, max_row_index]] = self[[max_row_index, row]]
+
             pivot = self[row][column]
             if pivot != 0:
                 for i in range(row + 1, row_count):
@@ -39,7 +47,12 @@ class AugmentedMatrix(np.ndarray):
             column += 1
             row = column
 
+        self._state = 'upper_triangular'
+
     def _simplify_echelon(self):
+        """
+        Simplifies the upper triangular form so that the pivots are 1
+        """
         # Simplify the echelon form
         for row_index in range(self.shape[0]):
             pivot = 1
@@ -49,7 +62,18 @@ class AugmentedMatrix(np.ndarray):
                     break
             self[row_index] = self[row_index] / pivot
 
-    def _reduce_echelon(self):
+    def reduce_echelon(self):
+        """
+        Transforms the matrix from upper triangular form to reduced echelon form
+        :raise: NoSolutionException: if the matrix has no solution
+        """
+        if self._state != 'upper_triangle':
+            self.partial_pivot()
+            self.reduce_echelon()
+
+        self._check_valid_solution()
+        self._simplify_echelon()
+
         for row_index in range(self.shape[0] - 1, -1, -1):
             pivot_coord = None
             for element_index in range(self.shape[1] - 1):
@@ -69,17 +93,12 @@ class AugmentedMatrix(np.ndarray):
                     factor = -1 * leading / pivot
                     self[i] = factor * self[pivot_coord[0]] + self[i]
 
+        self._state = 'reduce_echelon'
+
     def solve(self):
-        self._partial_pivot()
-        self._check_valid_solution()
-        self._simplify_echelon()
-        self._reduce_echelon()
-
-    def __repr__(self):
-        equations = ''
-        for i in range(self.shape[0]):
-            equation = ''
-            for j in range(self.shape[1]):
-                ...
-            equations += equation + '\n'
-
+        """
+        Solves the augmented matrix
+        :raise: NoSolutionException: if the matrix has no solution
+        """
+        self.partial_pivot()
+        self.reduce_echelon()
