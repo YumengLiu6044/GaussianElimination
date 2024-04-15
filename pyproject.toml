@@ -1,0 +1,14 @@
+[project]
+name = "Augmented Matrix Solver"
+version = "0.1"
+authors = [
+  { name="Yumeng Liu", email="lym20041026@gmail.com" },
+]
+description = "A package that solves augmented matrices into reduced echelon forms"
+readme = "README.md"
+requires-python = ">=3.12"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
