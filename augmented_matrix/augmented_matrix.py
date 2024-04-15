@@ -6,9 +6,6 @@ class NoSolutionError(Exception):
 
 
 class AugmentedMatrix(np.ndarray):
-    def __init__(self):
-        self._state = 'non_simplified'
-
     def __new__(cls, *args, **kwargs):
         return np.asarray(*args, dtype=np.float64, **kwargs).view(cls)
 
@@ -62,12 +59,15 @@ class AugmentedMatrix(np.ndarray):
                     break
             self[row_index] = self[row_index] / pivot
 
+    def _get_state(self):
+        ...
+
     def reduce_echelon(self):
         """
         Transforms the matrix from upper triangular form to reduced echelon form
         :raise: NoSolutionException: if the matrix has no solution
         """
-        if self._state != 'upper_triangle':
+        if self._get_state() != 'upper_triangle':
             self.partial_pivot()
             self.reduce_echelon()
 
@@ -102,3 +102,6 @@ class AugmentedMatrix(np.ndarray):
         """
         self.partial_pivot()
         self.reduce_echelon()
+
+
+__all__ = ['AugmentedMatrix']
