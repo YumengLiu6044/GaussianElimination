@@ -113,4 +113,4 @@ class AugmentedMatrix(np.ndarray):
         self.reduce_echelon()
 
 
-__all__ = ['AugmentedMatrix']
+__all__ = ['AugmentedMatrix', 'NoSolutionError']

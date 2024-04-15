@@ -2,8 +2,6 @@ import unittest
 from augmented_matrix import *
 from fractions import Fraction
 
-from augmented_matrix.augmented_matrix import NoSolutionError
-
 
 class TestAugmentedMatrix(unittest.TestCase):
     def _to_fraction(self, original):
