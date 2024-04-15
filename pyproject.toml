@@ -2,13 +2,20 @@
 name = "Augmented Matrix Solver"
 version = "0.1"
 authors = [
-  { name="Yumeng Liu", email="lym20041026@gmail.com" },
+  { name="Yumeng Liu", email="lym20041026@gmail.com" }
 ]
 description = "A package that solves augmented matrices into reduced echelon forms"
 readme = "README.md"
 requires-python = ">=3.12"
+dependencies= ['numpy']
+license= { file='LICENSE' }
 classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+
+[project.urls]
+Repository = "https://github.com/YumengLiu6044/GaussianElimination"
