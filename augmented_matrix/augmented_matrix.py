@@ -6,6 +6,9 @@ class NoSolutionError(Exception):
 
 
 class AugmentedMatrix:
+    """
+    A class that represents an augmented matrix
+    """
     def __init__(self, matrix, constraint=None, /, **kwargs):
         if constraint is not None:
             constraint = np.asarray(constraint, **kwargs)
