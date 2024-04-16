@@ -1,6 +1,6 @@
 [project]
 name = "augmented-matrix"
-version = "0.4"
+version = "0.5"
 authors = [
   { name="Yumeng Liu", email="lym20041026@gmail.com" }
 ]
