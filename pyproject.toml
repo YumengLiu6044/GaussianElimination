@@ -1,6 +1,6 @@
 [project]
-name = "Augmented-Matrix-Solver"
-version = "0.3"
+name = "augmented-matrix"
+version = "0.4"
 authors = [
   { name="Yumeng Liu", email="lym20041026@gmail.com" }
 ]
