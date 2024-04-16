@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+augmented_matrix/__init__.py
+augmented_matrix/augmented_matrix.py
+augmented_matrix.egg-info/PKG-INFO
+augmented_matrix.egg-info/SOURCES.txt
+augmented_matrix.egg-info/dependency_links.txt
+augmented_matrix.egg-info/requires.txt
+augmented_matrix.egg-info/top_level.txt
+test/test_augmented_matrix.py

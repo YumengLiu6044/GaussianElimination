@@ -10,7 +10,7 @@ class TestAugmentedMatrix(unittest.TestCase):
     def check_solution_equal(self, unsolved, expected):
         m = AugmentedMatrix(self._to_fraction(unsolved))
         m.solve()
-        self.assertEqual(m.tolist(), self._to_fraction(expected))
+        self.assertEqual(m.matrix.tolist(), self._to_fraction(expected))
 
     def test_augmented_matrix(self):
         original_matrix = [
@@ -38,7 +38,7 @@ class TestAugmentedMatrix(unittest.TestCase):
             [0, 1, 0, 4],
             [0, 0, 1, -1]
         ]
-        self.assertEqual(m.tolist(), expected)
+        self.assertEqual(m.matrix.tolist(), expected)
 
     def test_augmented_matrix_no_solution(self):
         original = [
