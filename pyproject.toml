@@ -1,12 +1,12 @@
 [project]
 name = "Augmented-Matrix-Solver"
-version = "0.1"
+version = "0.3"
 authors = [
   { name="Yumeng Liu", email="lym20041026@gmail.com" }
 ]
 description = "A package that solves augmented matrices into reduced echelon forms"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 dependencies= ['numpy']
 license= { file='LICENSE' }
 classifiers = [
