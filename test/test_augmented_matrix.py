@@ -7,8 +7,10 @@ class TestAugmentedMatrix(unittest.TestCase):
     def _to_fraction(self, original):
         return [[Fraction(j).limit_denominator() for j in i] for i in original]
 
-    def check_solution_equal(self, unsolved, expected):
-        m = AugmentedMatrix(self._to_fraction(unsolved))
+    def check_solution_equal(self, unsolved, expected, constraint=None):
+        if constraint is not None:
+            constraint = [Fraction(j).limit_denominator() for j in constraint]
+        m = AugmentedMatrix(self._to_fraction(unsolved), constraint)
         m.solve()
         self.assertEqual(m.matrix.tolist(), self._to_fraction(expected))
 
@@ -58,6 +60,20 @@ class TestAugmentedMatrix(unittest.TestCase):
             [0, 0, 0]
         ]
         self.check_solution_equal(original_matrix, expected)
+
+    def test_augmented_matrix_with_constraint(self):
+        original_matrix = [
+            [3, 5, -1],
+            [1, 4, 1],
+            [9, 0, 2]
+        ]
+        constraint = [10, 7, 1]
+        expected = [
+            [1, 0, 0, 0.2],
+            [0, 1, 0, 1.8],
+            [0, 0, 1, -0.4]
+        ]
+        self.check_solution_equal(original_matrix, expected, constraint=constraint)
 
 
 if __name__ == '__main__':

@@ -6,14 +6,10 @@ class NoSolutionError(Exception):
 
 
 class AugmentedMatrix:
-    def __init__(self, matrix, constraint=None, /, autofill_value=None, **kwargs):
-        # # Check the type of the matrix
-        #
-        # # Check if the matrix is passed as an augmented matrix
-        # # or as a matrix and constraint
-        # if constraint is not None:
-        #     matrix = np.array(matrix)
-        #     matrix = np.append(matrix, [[x] for x in constraint], axis=1)
+    def __init__(self, matrix, constraint=None, /, **kwargs):
+        if constraint is not None:
+            constraint = np.asarray(constraint, **kwargs)
+            matrix = np.append(matrix, [[i] for i in constraint], axis=1)
 
         self._matrix = np.asarray(matrix, **kwargs)
 
@@ -26,13 +22,6 @@ class AugmentedMatrix:
 
     def set_matrix(self, matrix):
         self._matrix = matrix
-
-    def _check_validity(self):
-        """
-        Check the validity of the matrix
-        :return: True if the matrix is valid, False otherwise
-        """
-        ...
 
     def check_valid_solution(self):
         """
