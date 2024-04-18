@@ -1,4 +1,5 @@
 import numpy as np
+from fractions import Fraction
 
 
 class NoSolutionError(Exception):
@@ -10,11 +11,14 @@ class AugmentedMatrix:
     A class that represents an augmented matrix
     """
     def __init__(self, matrix, constraint=None, /, **kwargs):
-        if constraint is not None:
-            constraint = np.asarray(constraint, **kwargs)
-            matrix = np.append(matrix, [[i] for i in constraint], axis=1)
+        def _to_fraction(original):
+            return [[Fraction(j).limit_denominator() for j in i] for i in original]
 
-        self._matrix = np.asarray(matrix, **kwargs)
+        self._matrix = np.asarray(_to_fraction(matrix), **kwargs)
+
+        if constraint is not None:
+            constraint = np.asarray(_to_fraction(constraint), **kwargs)
+            self._matrix = np.append(self._matrix, [[i] for i in constraint], axis=1)
 
     @property
     def matrix(self) -> np.ndarray:
@@ -82,6 +86,7 @@ class AugmentedMatrix:
 
             column += 1
             row = column
+            print(matrix)
 
         self._matrix = matrix
         return matrix
@@ -133,6 +138,7 @@ class AugmentedMatrix:
                     pivot = matrix[pivot_coord[0]][pivot_coord[1]]
                     factor = -1 * leading / pivot
                     matrix[i] = factor * matrix[pivot_coord[0]] + matrix[i]
+            print(matrix)
 
         self._matrix = matrix
         return matrix
