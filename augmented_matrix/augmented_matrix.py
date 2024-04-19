@@ -84,7 +84,6 @@ class AugmentedMatrix:
 
             column += 1
             row = column
-            print(matrix)
 
         self._matrix = matrix
         return matrix
@@ -136,7 +135,6 @@ class AugmentedMatrix:
                     pivot = matrix[pivot_coord[0]][pivot_coord[1]]
                     factor = -1 * leading / pivot
                     matrix[i] = factor * matrix[pivot_coord[0]] + matrix[i]
-            print(matrix)
 
         self._matrix = matrix
         return matrix
