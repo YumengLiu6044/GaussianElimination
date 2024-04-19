@@ -11,13 +11,11 @@ class AugmentedMatrix:
     A class that represents an augmented matrix
     """
     def __init__(self, matrix, constraint=None, /, **kwargs):
-        def _to_fraction(original):
-            return [[Fraction(j).limit_denominator() for j in i] for i in original]
 
-        self._matrix = np.asarray(_to_fraction(matrix), **kwargs)
+        self._matrix = np.asarray([[Fraction(j).limit_denominator() for j in i] for i in matrix], **kwargs)
 
         if constraint is not None:
-            constraint = np.asarray(_to_fraction(constraint), **kwargs)
+            constraint = np.asarray([Fraction(i).limit_denominator() for i in constraint], **kwargs)
             self._matrix = np.append(self._matrix, [[i] for i in constraint], axis=1)
 
     @property
