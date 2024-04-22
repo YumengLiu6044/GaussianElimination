@@ -113,7 +113,7 @@ class AugmentedMatrix:
         if not self.check_upper_triangular():
             self.partial_pivot()
 
-        self.check_valid_solution()
+
         self.simplify_echelon()
 
         matrix = self._matrix
@@ -147,6 +147,7 @@ class AugmentedMatrix:
         """
         self.partial_pivot()
         self.reduce_echelon()
+        self.check_valid_solution()
         return self._matrix
 
 
