@@ -148,7 +148,7 @@ class AugmentedMatrix:
         self.partial_pivot()
         self.reduce_echelon()
         self.check_valid_solution()
-        return self._matrix
+        return self._matrix.astype(float)
 
 
 __all__ = ['AugmentedMatrix', 'NoSolutionError']
