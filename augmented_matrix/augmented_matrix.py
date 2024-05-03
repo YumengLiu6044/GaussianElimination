@@ -139,7 +139,7 @@ class AugmentedMatrix:
         self._matrix = matrix
         return matrix
 
-    def solve(self) -> np.ndarray:
+    def solve(self, return_type=float) -> np.ndarray:
         """
         Solves the augmented matrix
         :returns self._matrix: the row-reduced matrix
@@ -148,7 +148,7 @@ class AugmentedMatrix:
         self.partial_pivot()
         self.reduce_echelon()
         self.check_valid_solution()
-        return self._matrix.astype(float)
+        return self._matrix.astype(return_type)
 
 
 __all__ = ['AugmentedMatrix', 'NoSolutionError']
