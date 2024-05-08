@@ -1,3 +1,4 @@
+import numpy
 import numpy as np
 from fractions import Fraction
 
@@ -17,6 +18,9 @@ class AugmentedMatrix:
         if constraint is not None:
             constraint = np.asarray([Fraction(i).limit_denominator() for i in constraint], **kwargs)
             self._matrix = np.append(self._matrix, [[i] for i in constraint], axis=1)
+
+        self._swap_factor = 1
+        self._mult_factor = 1
 
     @property
     def matrix(self) -> np.ndarray:
@@ -71,7 +75,9 @@ class AugmentedMatrix:
                 if abs(matrix[i][column]) > abs(matrix[max_row_index][column]):
                     max_row_index = i
 
-            matrix[[row, max_row_index]] = matrix[[max_row_index, row]]
+            if row != max_row_index:
+                matrix[[row, max_row_index]] = matrix[[max_row_index, row]]
+                self._swap_factor *= -1
 
             pivot = matrix[row][column]
             if pivot != 0:
@@ -81,6 +87,7 @@ class AugmentedMatrix:
                         continue
                     factor = -1 * pivot / leading_value
                     matrix[i] = factor * matrix[i] + matrix[row]
+                    self._mult_factor *= factor
 
             column += 1
             row = column
@@ -112,7 +119,6 @@ class AugmentedMatrix:
         """
         if not self.check_upper_triangular():
             self.partial_pivot()
-
 
         self.simplify_echelon()
 
@@ -149,6 +155,28 @@ class AugmentedMatrix:
         self.reduce_echelon()
         self.check_valid_solution()
         return self._matrix.astype(return_type)
+
+    def is_square(self) -> bool:
+        """
+        Checks if the matrix is square (the dimensions are equal and the matrix is 2D)
+        :returns True: if the matrix is square
+        :returns False: if the matrix is not square
+        """
+        shape = self._matrix.shape
+        return len(shape) == 2 and shape[0] == shape[1]
+
+    def determinant(self):
+        """
+        Calculates the determinant of the matrix
+        :return: a value indicating the determinant of this matrix
+        :raises NoSolutionException: if the matrix is not square
+        """
+
+        if self.is_square():
+            self.partial_pivot()
+            return numpy.prod(self._matrix.diagonal(), axis=0) * self._swap_factor / self._mult_factor
+        else:
+            raise NoSolutionError("The matrix is not square")
 
 
 __all__ = ['AugmentedMatrix', 'NoSolutionError']
