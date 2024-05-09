@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: augmented-matrix
-Version: 0.8
+Version: 0.9
 Summary: A package that solves augmented matrices into reduced echelon forms
 Author-email: Yumeng Liu <lym20041026@gmail.com>
 License: MIT License

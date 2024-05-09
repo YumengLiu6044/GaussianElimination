@@ -19,9 +19,6 @@ class AugmentedMatrix:
             constraint = np.asarray([Fraction(i).limit_denominator() for i in constraint], **kwargs)
             self._matrix = np.append(self._matrix, [[i] for i in constraint], axis=1)
 
-        self._swap_factor = 1
-        self._mult_factor = 1
-
     @property
     def matrix(self) -> np.ndarray:
         """
@@ -77,7 +74,6 @@ class AugmentedMatrix:
 
             if row != max_row_index:
                 matrix[[row, max_row_index]] = matrix[[max_row_index, row]]
-                self._swap_factor *= -1
 
             pivot = matrix[row][column]
             if pivot != 0:
@@ -87,7 +83,6 @@ class AugmentedMatrix:
                         continue
                     factor = -1 * pivot / leading_value
                     matrix[i] = factor * matrix[i] + matrix[row]
-                    self._mult_factor *= factor
 
             column += 1
             row = column
@@ -169,14 +164,10 @@ class AugmentedMatrix:
         """
         Calculates the determinant of the matrix
         :return: a value indicating the determinant of this matrix
-        :raises NoSolutionException: if the matrix is not square
+        :raises LinAlgError: if the matrix is not square
         """
 
-        if self.is_square():
-            self.partial_pivot()
-            return numpy.prod(self._matrix.diagonal(), axis=0) * self._swap_factor / self._mult_factor
-        else:
-            raise NoSolutionError("The matrix is not square")
+        return numpy.linalg.det(self._matrix.astype(float))
 
 
 __all__ = ['AugmentedMatrix', 'NoSolutionError']

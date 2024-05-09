@@ -1,20 +1,21 @@
 import unittest
 from augmented_matrix import *
 from fractions import Fraction
+import numpy as np
 
 
 class TestAugmentedMatrix(unittest.TestCase):
     def _to_fraction(self, original):
         return [[Fraction(j).limit_denominator() for j in i] for i in original]
 
-    def check_matrix_equal(self, unsolved, expected, constraint=None):
+    def _check_matrix_equal(self, unsolved, expected, constraint=None):
         if constraint is not None:
             constraint = [Fraction(j).limit_denominator() for j in constraint]
         m = AugmentedMatrix(self._to_fraction(unsolved), constraint)
         m.solve()
         self.assertEqual(m.matrix.tolist(), self._to_fraction(expected))
 
-    def check_determinant(self, matrix, expected_determinant):
+    def _check_determinant(self, matrix, expected_determinant):
         m = AugmentedMatrix(matrix)
         self.assertEqual(m.determinant(), expected_determinant)
 
@@ -30,7 +31,7 @@ class TestAugmentedMatrix(unittest.TestCase):
             [0, 1, 0, 1.8],
             [0, 0, 1, -0.4]
         ]
-        self.check_matrix_equal(original_matrix, expected)
+        self._check_matrix_equal(original_matrix, expected)
 
     def test_call_reduce_echelon_when_non_echelon(self):
         m = AugmentedMatrix(self._to_fraction([
@@ -52,7 +53,7 @@ class TestAugmentedMatrix(unittest.TestCase):
             [1, 2, 4]
         ]
         with self.assertRaises(NoSolutionError):
-            self.check_matrix_equal(original, [])
+            self._check_matrix_equal(original, [])
 
     def test_augmented_matrix_with_free_variable(self):
         original_matrix = [
@@ -63,7 +64,7 @@ class TestAugmentedMatrix(unittest.TestCase):
             [1, 2, 3],
             [0, 0, 0]
         ]
-        self.check_matrix_equal(original_matrix, expected)
+        self._check_matrix_equal(original_matrix, expected)
 
     def test_augmented_matrix_with_constraint(self):
         original_matrix = [
@@ -77,7 +78,7 @@ class TestAugmentedMatrix(unittest.TestCase):
             [0, 1, 0, 1.8],
             [0, 0, 1, -0.4]
         ]
-        self.check_matrix_equal(original_matrix, expected, constraint=constraint)
+        self._check_matrix_equal(original_matrix, expected, constraint=constraint)
 
     def test_determinant(self):
         matrix = [
@@ -86,15 +87,15 @@ class TestAugmentedMatrix(unittest.TestCase):
             [-3, 0, 1, -2],
             [1, -4, 0, 6]
         ]
-        self.check_determinant(matrix, -36)
+        self._check_determinant(matrix, -36)
 
     def test_non_square_matrix_determinant_raise_error(self):
         matrix = [
             [1, 2, 3],
             [4, 5, 6]
         ]
-        with self.assertRaises(NoSolutionError):
-            self.check_determinant(matrix, 1)
+        with self.assertRaises(np.linalg.LinAlgError):
+            self._check_determinant(matrix, 1)
 
 
 if __name__ == '__main__':
