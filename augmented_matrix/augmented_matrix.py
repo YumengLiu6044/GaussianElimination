@@ -1,6 +1,4 @@
-import numpy
 import numpy as np
-from fractions import Fraction
 
 
 class NoSolutionError(Exception):
@@ -12,11 +10,17 @@ class AugmentedMatrix:
     A class that represents an augmented matrix
     """
     def __init__(self, matrix, constraint=None, /, **kwargs):
+        """
 
-        self._matrix = np.asarray([[Fraction(j).limit_denominator() for j in i] for i in matrix], **kwargs)
+        :param matrix: An n*n 2D matrix
+        :param constraint: An n*1 vector that's the constraint of the augmented matrix
+        :param kwargs: kwargs for initializing the np array
+        """
+
+        self._matrix = np.asarray(matrix, **kwargs)
 
         if constraint is not None:
-            constraint = np.asarray([Fraction(i).limit_denominator() for i in constraint], **kwargs)
+            constraint = np.asarray(constraint, **kwargs)
             self._matrix = np.append(self._matrix, [[i] for i in constraint], axis=1)
 
     @property
@@ -167,7 +171,7 @@ class AugmentedMatrix:
         :raises LinAlgError: if the matrix is not square
         """
 
-        return numpy.linalg.det(self._matrix.astype(float))
+        return np.linalg.det(self._matrix.astype(float))
 
 
 __all__ = ['AugmentedMatrix', 'NoSolutionError']
