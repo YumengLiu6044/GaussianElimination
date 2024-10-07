@@ -1,10 +1,10 @@
 [project]
 name = "augmented-matrix"
-version = "0.10"
+version = "1.0"
 authors = [
   { name="Yumeng Liu", email="lym20041026@gmail.com" }
 ]
-description = "A package that solves augmented matrices into reduced echelon forms"
+description = "A package that solves augmented matrices into reduced echelon forms and calculates determinants"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies= ['numpy']

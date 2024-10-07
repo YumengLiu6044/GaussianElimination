@@ -1,11 +1,12 @@
 import unittest
-from augmented_matrix import *
+from augmented_matrix import AugmentedMatrix, NoSolutionError
 from fractions import Fraction
 import numpy as np
 
 
 class TestAugmentedMatrix(unittest.TestCase):
-    def _to_fraction(self, original):
+    @staticmethod
+    def _to_fraction(original):
         return [[Fraction(j).limit_denominator() for j in i] for i in original]
 
     def _check_matrix_equal(self, unsolved, expected, constraint=None):

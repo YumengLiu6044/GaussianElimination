@@ -12,8 +12,8 @@ class AugmentedMatrix:
     def __init__(self, matrix, constraint=None, /, **kwargs):
         """
 
-        :param matrix: An n*n 2D matrix
-        :param constraint: An n*1 vector that's the constraint of the augmented matrix
+        :param matrix: An m*n 2D matrix
+        :param constraint: An m*1 vector that's the constraint of the augmented matrix
         :param kwargs: kwargs for initializing the np array
         """
 
